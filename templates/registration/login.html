@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In | UniversityHub{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Student Portal Log In</h2>
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.name == 'password' %}
+                    <input type="password" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Password" required>
+                {% else %}
+                    <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Username" required>
+                {% endif %}
+                
+                {% if field.errors %}
+                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px;">
+                        {% for error in field.errors %}{{ error }}{% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="margin-top: 32px;">
+            <button type="submit" class="btn-primary" style="width: 100%;">Log In</button>
+        </div>
+    </form>
+    
+    <p style="margin-top: 20px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+        Don't have an account yet? <a href="{% url 'register_user' %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Register here</a>.
+    </p>
+</div>
+{% endblock %}

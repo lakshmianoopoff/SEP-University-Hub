@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UniversityHub{% endblock %}</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Static Stylesheet -->
+    <link rel="stylesheet" href="{% static 'academic/style.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="{% url 'course_list' %}" class="logo">
+                <span>UniversityHub</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="{% url 'course_list' %}" class="nav-link">Courses</a>
+                <a href="{% url 'student_create' %}" class="nav-link">Register Student</a>
+
+                {% if user.is_authenticated %}
+                <span class="user-badge">Signed in as: {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Log out</button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Log in</a>
+                <a href="{% url 'register_user' %}" class="nav-link btn-primary"
+                    style="color: white; padding: 6px 16px;">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 UniversityHub Systems. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

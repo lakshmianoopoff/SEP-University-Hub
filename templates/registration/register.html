@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Register User | UniversityHub{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Create Portal Profile</h2>
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div class="errorlist">
+                <strong>Please correct the errors below:</strong>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if 'password' in field.name %}
+                    <input type="password" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter {{ field.label }}" required>
+                {% else %}
+                    <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter {{ field.label }}" required>
+                {% endif %}
+                
+                {% if field.help_text %}
+                    <small style="color: var(--text-muted); display: block; margin-top: 4px; font-size: 0.8rem;">{{ field.help_text|safe }}</small>
+                {% endif %}
+                
+                {% if field.errors %}
+                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px;">
+                        {% for error in field.errors %}{{ error }}{% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="margin-top: 32px;">
+            <button type="submit" class="btn-primary" style="width: 100%;">Create Account</button>
+        </div>
+    </form>
+    
+    <p style="margin-top: 20px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+        Already have an account? <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Log in here</a>.
+    </p>
+</div>
+{% endblock %}
