@@ -34,7 +34,8 @@ def student_create(request):
         'academic/student_form.html',
         {'form': form}
     )
-@login_required
+
+
 def course_list(request):
     # 1. Fetch data from DB
     all_courses = Course.objects.all()
