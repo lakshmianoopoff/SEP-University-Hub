@@ -7,6 +7,9 @@ from .forms import StudentForm
 
 class AcademicViewsAndFormsTestCase(TestCase):
     def setUp(self):
+        # Create a sample user
+        self.user = User.objects.create_user(username='testuser', password='password123')
+        
         # Create a sample department and course for the tests
         self.dept = Department.objects.create(
             name="Computer Science",
@@ -27,6 +30,7 @@ class AcademicViewsAndFormsTestCase(TestCase):
         self.assertContains(response, "Hello, World!")
 
     def test_course_list_view(self):
+        self.client.login(username='testuser', password='password123')
         response = self.client.get(reverse('course_list'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Web Development")
@@ -57,6 +61,7 @@ class AcademicViewsAndFormsTestCase(TestCase):
         self.assertTrue(form_valid.is_valid())
 
     def test_student_creation_post_redirect_get(self):
+        self.client.login(username='testuser', password='password123')
         form_data = {
             'first_name': 'Alice',
             'last_name': 'Smith',

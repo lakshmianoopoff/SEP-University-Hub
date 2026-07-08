@@ -35,7 +35,7 @@ def student_create(request):
         {'form': form}
     )
 
-
+@login_required
 def course_list(request):
     # 1. Fetch data from DB
     all_courses = Course.objects.all()
@@ -49,7 +49,15 @@ def course_list(request):
     # 3. Render: Combine the request, the template, and the data
     return render(request, 'academic/course_list.html', context)
 
-
+def is_admin(user):
+    return user.is_staff
+def delete_student(request,id):
+    student = student.objects.get(id=id)
+    if student.user:
+        student.user.delete()
+    else:
+        student.delete()
+    return redirect('course_list')
 
 
 def register_user(request):

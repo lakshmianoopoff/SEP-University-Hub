@@ -8,9 +8,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <!-- Static Stylesheet -->
-    <link rel="stylesheet" href="{% static 'academic/style.css' %}?v=1.2">
+    <link rel="stylesheet" href="{% static 'academic/style.css' %}?v=1.3">
 </head>
 <body>
 
@@ -23,14 +23,14 @@
     <!-- Header Navigation -->
     <header>
         <div class="nav-container">
-            <a href="{% url 'course_list' %}" class="logo">
+            <a href="{% url 'course_list' %}" class="logo auth-restricted">
                 <span class="logo-icon"></span>
                 <span class="logo-text">University<span>Hub</span></span>
             </a>
             
             <nav class="nav-links">
-                <a href="{% url 'course_list' %}" class="nav-link">Courses</a>
-                <a href="{% url 'student_create' %}" class="nav-link">Register Student</a>
+                <a href="{% url 'course_list' %}" class="nav-link auth-restricted">Courses</a>
+                <a href="{% url 'student_create' %}" class="nav-link auth-restricted">Register Student</a>
                 
                 {% if user.is_authenticated %}
                     <span class="user-badge">Account: {{ user.username }}</span>
@@ -58,5 +58,72 @@
         <p>&copy; 2026 UniversityHub Systems. All rights reserved. Designed for optimal academic administration.</p>
     </footer>
 
+    <!-- Reusable Access Gate Modal -->
+    <div id="auth-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+        <div class="modal-card" tabindex="-1" id="modal-card">
+            <button class="modal-close-btn" id="modal-close-x" aria-label="Close modal">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Access Restricted</h2>
+            </div>
+            <div class="modal-body">
+                <p>Please log in or register to view and access courses.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'login' %}" class="btn-submit">Log In</a>
+                <a href="{% url 'register_user' %}" class="btn-accent">Register</a>
+                <button class="btn-secondary" id="modal-close-btn">Maybe later</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('auth-modal');
+            const modalCard = document.getElementById('modal-card');
+            const closeX = document.getElementById('modal-close-x');
+            const closeBtn = document.getElementById('modal-close-btn');
+            const restrictedLinks = document.querySelectorAll('.auth-restricted');
+
+            function showAuthModal() {
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                modalCard.focus();
+                document.addEventListener('keydown', handleEscapeKey);
+            }
+
+            function hideAuthModal() {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                document.removeEventListener('keydown', handleEscapeKey);
+            }
+
+            function handleEscapeKey(e) {
+                if (e.key === 'Escape') {
+                    hideAuthModal();
+                }
+            }
+
+            // Click interception
+            if (!isAuthenticated) {
+                restrictedLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        showAuthModal();
+                    });
+                });
+            }
+
+            // Close actions
+            closeX.addEventListener('click', hideAuthModal);
+            closeBtn.addEventListener('click', hideAuthModal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    hideAuthModal();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
