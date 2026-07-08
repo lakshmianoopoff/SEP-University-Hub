@@ -19,14 +19,15 @@ from django.contrib import admin
 # pyrefly: ignore [missing-import]
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
     # Built-in URL configuration for the Django admin panel.
       path('admin/', admin.site.urls),
 
-    # Include academic app URLs
-    path('', include('academic.urls')),
+    # Redirect root to courses
+    path('', RedirectView.as_view(url='/academic/courses/', permanent=False)),
 
     # Login Route
     path(

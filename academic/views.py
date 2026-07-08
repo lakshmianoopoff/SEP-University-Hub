@@ -1,12 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from .forms import StudentForm
 from .models import Course
 
 
 def hello_world(request):
     return HttpResponse("Hello, World!")
+
 
 
 def student_create(request):
@@ -32,7 +34,7 @@ def student_create(request):
         'academic/student_form.html',
         {'form': form}
     )
-
+@login_required
 def course_list(request):
     # 1. Fetch data from DB
     all_courses = Course.objects.all()

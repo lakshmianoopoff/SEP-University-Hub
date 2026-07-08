@@ -1,46 +1,53 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}UniversityHub{% endblock %}</title>
-    <!-- Premium Google Fonts -->
+    <title>{% block title %}UniversityHub Portal{% endblock %}</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Static Stylesheet -->
-    <link rel="stylesheet" href="{% static 'academic/style.css' %}">
+    <link rel="stylesheet" href="{% static 'academic/style.css' %}?v=1.2">
 </head>
-
 <body>
 
+    <!-- Top Announcement Bar -->
+    <div class="top-notice-bar">
+        <span class="badge">Notice</span>
+        <span>Registration is open for the 2026 Student Intake! All semester courses are now active.</span>
+    </div>
+
+    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="{% url 'course_list' %}" class="logo">
-                <span>UniversityHub</span>
+                <span class="logo-icon"></span>
+                <span class="logo-text">University<span>Hub</span></span>
             </a>
-
+            
             <nav class="nav-links">
                 <a href="{% url 'course_list' %}" class="nav-link">Courses</a>
                 <a href="{% url 'student_create' %}" class="nav-link">Register Student</a>
-
+                
                 {% if user.is_authenticated %}
-                <span class="user-badge">Signed in as: {{ user.username }}</span>
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="logout-btn">Log out</button>
-                </form>
+                    <span class="user-badge">Account: {{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-outline-logout">Log out</button>
+                    </form>
                 {% else %}
-                <a href="{% url 'login' %}" class="nav-link">Log in</a>
-                <a href="{% url 'register_user' %}" class="nav-link btn-primary"
-                    style="color: white; padding: 6px 16px;">Register</a>
+                    <a href="{% url 'login' %}" class="nav-link">Log in</a>
+                    <a href="{% url 'register_user' %}" class="btn-accent">Register</a>
                 {% endif %}
             </nav>
         </div>
     </header>
+
+    {% block hero %}
+    {% endblock %}
 
     <main>
         {% block content %}
@@ -48,9 +55,8 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 UniversityHub Systems. All rights reserved.</p>
+        <p>&copy; 2026 UniversityHub Systems. All rights reserved. Designed for optimal academic administration.</p>
     </footer>
 
 </body>
-
 </html>

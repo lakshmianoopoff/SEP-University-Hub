@@ -1,28 +1,75 @@
 {% extends 'base.html' %}
 
-{% block title %}Course List{% endblock %}
+{% block title %}Courses Catalog | UniversityHub{% endblock %}
+
+{% block hero %}
+<div class="hero-banner">
+    <div class="hero-container">
+        <p class="hero-subtitle">Education & Knowledge</p>
+        <h1 class="hero-title">Build Your Future, Choose Your Course</h1>
+        <p class="hero-description">Explore our comprehensive course catalog, coordinate academic programs, and register students into active semester pathways.</p>
+        <a href="{% url 'student_create' %}" class="btn-hero">Register New Student →</a>
+    </div>
+</div>
+
+<div class="metrics-section">
+    <div class="metric-card">
+        <div class="metric-icon-box">📚</div>
+        <div class="metric-info">
+            <h3>{{ courses|length }}</h3>
+            <p>Active Courses</p>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-icon-box">🏛️</div>
+        <div class="metric-info">
+            <h3>2</h3>
+            <p>Departments</p>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-icon-box">🎓</div>
+        <div class="metric-info">
+            <h3>150+</h3>
+            <p>Enrolled Students</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block content %}
-<h2>Available Courses</h2>
+<div class="section-title-box">
+    <h2>Available Courses Catalog</h2>
+</div>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Department</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for course in courses %}
-        <tr>
-            <td>{{ course.code }}</td>
-            <td>{{ course.name }}</td>
-            <td>{{ course.department.name }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Course Name</th>
+                <th>Department</th>
+                <th>Credits</th>
+                <th>Semester</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+                <tr>
+                    <td><strong>{{ course.code }}</strong></td>
+                    <td>{{ course.name }}</td>
+                    <td><span class="dept-badge">{{ course.department.name }}</span></td>
+                    <td><strong>{{ course.credits }}</strong> Credits</td>
+                    <td>Semester {{ course.semester }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        No courses available at this time.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

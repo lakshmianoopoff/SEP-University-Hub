@@ -3,10 +3,13 @@
 {% block title %}Log In | UniversityHub{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h2>Student Portal Log In</h2>
+<div class="form-card">
+    <div class="form-header">
+        <h2>Student Portal Login</h2>
+        <p>Enter your credentials to manage your courses.</p>
+    </div>
     
-    <form method="post" novalidate>
+    <form method="post" class="form-body" novalidate>
         {% csrf_token %}
         
         {% if form.non_field_errors %}
@@ -27,7 +30,7 @@
                 {% endif %}
                 
                 {% if field.errors %}
-                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px;">
+                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px; font-weight: 500;">
                         {% for error in field.errors %}{{ error }}{% endfor %}
                     </span>
                 {% endif %}
@@ -35,12 +38,12 @@
         {% endfor %}
         
         <div style="margin-top: 32px;">
-            <button type="submit" class="btn-primary" style="width: 100%;">Log In</button>
+            <button type="submit" class="btn-submit">Log In</button>
+        </div>
+        
+        <div class="form-footer">
+            Don't have an account yet? <a href="{% url 'register_user' %}">Register here</a>
         </div>
     </form>
-    
-    <p style="margin-top: 20px; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
-        Don't have an account yet? <a href="{% url 'register_user' %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Register here</a>.
-    </p>
 </div>
 {% endblock %}

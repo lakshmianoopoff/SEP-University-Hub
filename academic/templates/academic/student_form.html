@@ -1,17 +1,43 @@
 {% extends 'base.html' %}
 
+{% block title %}Register Student | UniversityHub{% endblock %}
+
 {% block content %}
-
-<h2>Register New Student</h2>
-
-<form method="post">
-
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">Save Student</button>
-
-</form>
-
+<div class="form-card">
+    <div class="form-header">
+        <h2>Register Student</h2>
+        <p>Enter the student information and select enrolled courses.</p>
+    </div>
+    
+    <form method="post" class="form-body" novalidate>
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="errorlist">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                
+                {% if field.help_text %}
+                    <small style="color: var(--text-muted); display: block; margin-top: 4px;">{{ field.help_text|safe }}</small>
+                {% endif %}
+                
+                {% if field.errors %}
+                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px; font-weight: 500;">
+                        {% for error in field.errors %}{{ error }}{% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="margin-top: 32px;">
+            <button type="submit" class="btn-submit">Save Student Record</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
