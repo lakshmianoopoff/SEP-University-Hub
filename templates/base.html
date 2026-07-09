@@ -10,14 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <!-- Static Stylesheet -->
-    <link rel="stylesheet" href="{% static 'academic/style.css' %}?v=1.3">
+    <link rel="stylesheet" href="{% static 'academic/style.css' %}?v=2.2">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
     <!-- Top Announcement Bar -->
     <div class="top-notice-bar">
         <span class="badge">Notice</span>
-        <span>Registration is open for the 2026 Student Intake! All semester courses are now active.</span>
+        <span><i data-lucide="megaphone" style="width: 14px; height: 14px; margin-right: 6px; vertical-align: middle; stroke-width: 2.5px;"></i> Registration is open for the 2026 Student Intake! All semester courses are now active.</span>
     </div>
 
     <!-- Header Navigation -->
@@ -54,8 +54,64 @@
         {% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; 2026 UniversityHub Systems. All rights reserved. Designed for optimal academic administration.</p>
+    <!-- Structured Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand-col">
+                <a href="{% url 'course_list' %}" class="logo logo-light footer-logo auth-restricted">
+                    <span class="logo-icon"></span>
+                    <span class="logo-text">University<span>Hub</span></span>
+                </a>
+                <p class="footer-tagline">Empowering future leaders through rigorous education, hands-on learning, and a supportive academic environment.</p>
+                <div class="footer-socials">
+                    <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                    <a href="#" aria-label="twitter"><i data-lucide="twitter"></i></a>
+                    <a href="#" aria-label="linkedin"><i data-lucide="linkedin"></i></a>
+                    <a href="#" aria-label="instagram"><i data-lucide="instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links-col">
+                <h3>Academics</h3>
+                <ul>
+                    <li><a href="{% url 'course_list' %}" class="auth-restricted">Courses Catalog</a></li>
+                    <li><a href="{% url 'student_create' %}" class="auth-restricted">Admissions Portal</a></li>
+                    <li><a href="#">Academic Calendar</a></li>
+                    <li><a href="#">Faculty Directory</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links-col">
+                <h3>Campus Life</h3>
+                <ul>
+                    <li><a href="#">Student Services</a></li>
+                    <li><a href="#">Clubs & Activities</a></li>
+                    <li><a href="#">Housing & Dining</a></li>
+                    <li><a href="#">Athletics</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links-col">
+                <h3>Contact & Help</h3>
+                <ul>
+                    <li><a href="#">Contact Directory</a></li>
+                    <li><a href="#">IT Support Helpdesk</a></li>
+                    <li><a href="#">Campus Map & Directions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <p>&copy; 2026 UniversityHub Systems. All rights reserved. Designed for optimal academic administration.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Reusable Access Gate Modal -->
@@ -66,7 +122,7 @@
                 <h2 id="modal-title">Access Restricted</h2>
             </div>
             <div class="modal-body">
-                <p>Please log in or register to view and access courses.</p>
+                <!-- <p>Please log in or register to view and access courses.</p> -->
             </div>
             <div class="modal-footer">
                 <a href="{% url 'login' %}" class="btn-submit">Log In</a>
@@ -124,6 +180,11 @@
                 }
             });
         });
+    </script>
+    <!-- Lucide Icon Library -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.407.0/dist/umd/lucide.min.js"></script>
+    <script>
+        lucide.createIcons();
     </script>
 </body>
 </html>

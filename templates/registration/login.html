@@ -1,49 +1,150 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Log In | UniversityHub{% endblock %}
 
-{% block content %}
-<div class="form-card">
-    <div class="form-header">
-        <h2>Student Portal Login</h2>
-        <p>Enter your credentials to manage your courses.</p>
+{% block body_class %}login-page-body{% endblock %}
+
+{% block hero %}
+<!-- 1. FULL-WIDTH HERO IMAGE SECTION -->
+<div class="landing-hero" style="background-image: url('{% static 'academic/university_campus_hero.png' %}');">
+    <div class="landing-hero-overlay"></div>
+    <div class="landing-hero-content">
+        <div class="landing-hero-content-box">
+            <span class="landing-hero-tag">Welcome to UniversityHub</span>
+            <h1 class="landing-hero-title">Shaping the Leaders of Tomorrow</h1>
+            <p class="landing-hero-subtitle">Experience academic excellence, world-class faculty, and a vibrant community.</p>
+            <a href="#features-section" class="btn-hero-scroll">Explore Campus &rarr;</a>
+        </div>
     </div>
-    
-    <form method="post" class="form-body" novalidate>
-        {% csrf_token %}
-        
-        {% if form.non_field_errors %}
-            <div class="errorlist">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {% if field.name == 'password' %}
-                    <input type="password" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Password" required>
-                {% else %}
-                    <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Username" required>
-                {% endif %}
-                
-                {% if field.errors %}
-                    <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px; font-weight: 500;">
-                        {% for error in field.errors %}{{ error }}{% endfor %}
-                    </span>
-                {% endif %}
-            </div>
-        {% endfor %}
-        
-        <div style="margin-top: 32px;">
-            <button type="submit" class="btn-submit">Log In</button>
-        </div>
-        
-        <div class="form-footer">
-            Don't have an account yet? <a href="{% url 'register_user' %}">Register here</a>
-        </div>
-    </form>
 </div>
+
+<!-- 2. "WHY UNIVERSITYHUB" FEATURE SECTION -->
+<div id="features-section" class="features-section">
+    <div class="container">
+        <div class="section-eyebrow">Discover Our Purpose</div>
+        <h2 class="features-title">Why UniversityHub?</h2>
+        <div class="features-grid">
+            <div class="feature-card-landing">
+                <div class="feature-icon-badge">
+                    <i data-lucide="graduation-cap"></i>
+                </div>
+                <h3>Quality Courses</h3>
+                <p>Our curriculum is designed by industry experts to provide deep, rigorous, and relevant knowledge.</p>
+            </div>
+            <div class="feature-card-landing">
+                <div class="feature-icon-badge">
+                    <i data-lucide="heart-handshake"></i>
+                </div>
+                <h3>Student Support</h3>
+                <p>Access dedicated academic advising, peer tutoring, and career mentoring every step of the way.</p>
+            </div>
+            <div class="feature-card-landing">
+                <div class="feature-icon-badge">
+                    <i data-lucide="briefcase"></i>
+                </div>
+                <h3>Real-World Learning</h3>
+                <p>Gain hands-on experience through project-based coursework, research, and internships.</p>
+            </div>
+            <div class="feature-card-landing">
+                <div class="feature-icon-badge">
+                    <i data-lucide="globe"></i>
+                </div>
+                <h3>Vibrant Community</h3>
+                <p>Connect with a diverse student body and engage in clubs, workshops, and campus activities.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- 3. LOGIN & PORTAL INFO SECTION -->
+<section class="login-section" style="background-image: url('{% static 'academic/university_campus_hero.png' %}');">
+    <div class="login-overlay"></div>
+    <div class="container">
+        <div class="login-grid">
+            <!-- Left Info Panel -->
+            <div class="login-info-panel">
+                <span class="login-eyebrow">Portal Access</span>
+                <h2 class="login-panel-title">UniversityHub Student Portal</h2>
+                <p class="login-panel-text">Welcome back! Access your classes, grades, academic records, and student services. Use your registered portal credentials to sign in.</p>
+                <div class="login-features-list">
+                    <div class="login-feat-item">
+                        <div class="login-feat-icon">
+                            <i data-lucide="book-open"></i>
+                        </div>
+                        <div class="login-feat-text">
+                            <h4>Syllabus Catalog</h4>
+                            <p>Browse course syllabi, prerequisites, and schedules dynamically.</p>
+                        </div>
+                    </div>
+                    <div class="login-feat-item">
+                        <div class="login-feat-icon">
+                            <i data-lucide="user-check"></i>
+                        </div>
+                        <div class="login-feat-text">
+                            <h4>Student Enrollment</h4>
+                            <p>Register student profiles and enroll them in standard classes.</p>
+                        </div>
+                    </div>
+                    <div class="login-feat-item">
+                        <div class="login-feat-icon">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <div class="login-feat-text">
+                            <h4>Secure Connection</h4>
+                            <p>All administrative requests are encrypted and verified under student logs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Form Card -->
+            <div class="form-card">
+                <div class="form-header">
+                    <h2>Student Portal Login</h2>
+                    <p>Enter your credentials to manage your courses.</p>
+                </div>
+                
+                <form method="post" class="form-body" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="errorlist">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if field.name == 'password' %}
+                                <input type="password" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Password" required>
+                            {% else %}
+                                <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control" placeholder="Enter Username" required>
+                            {% endif %}
+                            
+                            {% if field.errors %}
+                                <span style="color: #dc2626; font-size: 0.85rem; display: block; margin-top: 4px; font-weight: 500;">
+                                    {% for error in field.errors %}{{ error }}{% endfor %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    <div style="margin-top: 32px;">
+                        <button type="submit" class="btn-submit">Log In</button>
+                    </div>
+                    
+                    <div class="form-footer">
+                        Don't have an account yet? <a href="{% url 'register_user' %}">Register here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

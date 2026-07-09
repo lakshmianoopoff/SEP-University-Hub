@@ -1,9 +1,37 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .forms import StudentForm
 from .models import Course
+
+from rest_framework import viewsets
+from .models import Course, Student
+
+from .serializers import *
+
+
+# This ONE class handles GET (List), GET (Detail), POST, PUT, and DELETE
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+def api_course_list(request):
+    courses=Course.objects.all()
+    
+    data={
+        'count': courses.count(),
+        'results':list(courses.values('name','code','credits'))
+    }
+    return JsonResponse(data)
 
 
 def hello_world(request):
@@ -19,10 +47,48 @@ def student_create(request):
 
         # 2. Validation Check
         if form.is_valid():
-            # 3. Save to DB
-            form.save()
+           # get login fields safely
+            username = request.POST.get('username', '').strip()
+            password = request.POST.get('password', '').strip()
+            email = request.POST.get('email', '').strip()
+             
 
-            # 4. Redirect (Post-Redirect-Get Pattern)
+            if not username or not password or not email:
+                return render(
+                    request,
+                    'academic/student_form.html',
+                    {
+                        'form': form,
+                        'error': 'All login fields required'
+                    }
+                )
+            if User.objects.filter(username=username).exists():
+                return render(
+                    request,
+                    'academic/student_form.html',
+                    {
+                        'form': form,
+                        'error': 'Username already exists'
+                    }
+                )
+
+            # create user first
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email
+            )
+
+  # THEN create student object
+            student = form.save(commit=False)
+            student.user = user
+            student.save()
+
+            form.save_m2m()
+
+            return redirect('course_list')
+
+         # 4. Redirect (Post-Redirect-Get Pattern)
             return redirect('course_list')
 
     else:
@@ -78,3 +144,13 @@ def register_user(request):
         'registration/register.html',
         {'form': form}
     )
+
+
+@login_required
+def student_profile(request,id):
+    profile=Student.objects.get(id=id)
+
+    if request.user!=profile.user:
+        return HttpResponseForbidden("You are not authorized to view this profile.")
+    return HttpResponse("Profile allowed")
+

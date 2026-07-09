@@ -37,7 +37,10 @@ class Course(models.Model):
         return f"{self.code} - {self.name}"
 
 
+from django.contrib.auth.models import User
+
 class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
@@ -45,6 +48,13 @@ class Student(models.Model):
 
     # Many-to-Many: A student can pick multiple courses
     courses = models.ManyToManyField(Course, blank=True)
+
+    profile_pic= models.ImageField(
+        upload_to='student/profiles/',
+        blank=True,
+        null=True,
+
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

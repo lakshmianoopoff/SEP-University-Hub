@@ -66,6 +66,8 @@ class AcademicViewsAndFormsTestCase(TestCase):
             'first_name': 'Alice',
             'last_name': 'Smith',
             'email': 'alice.smith@university.edu',
+            'username': 'alicesmith',
+            'password': 'password123',
             'courses': [self.course.id]
         }
         response = self.client.post(reverse('student_create'), data=form_data)
